@@ -324,8 +324,8 @@ class WordFrequency(object):
                 str: The next `word` in the tokenized string
             Note:
                 This is the same as the `spellchecker.split_words()` """
-        for x in self._tokenizer(text):
-            yield x.lower()
+        for word in self._tokenizer(text):
+            yield word.lower()
 
     def keys(self):
         """ Iterator over the key of the dictionary

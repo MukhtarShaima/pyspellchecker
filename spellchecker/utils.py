@@ -8,9 +8,12 @@ if sys.version_info < (3, 0):
     import io  # python 2 text file encoding support
 
     OPEN = io.open  # hijack this
+    READMODE = 'rb'
+    WRITEMODE = 'wb'
 else:
     OPEN = open
-
+    READMODE = 'rt'
+    WRITEMODE = 'wt'
 
 @contextlib.contextmanager
 def load_file(filename, encoding):
@@ -24,7 +27,7 @@ def load_file(filename, encoding):
             str: The string data from the file read
     """
     try:
-        with gzip.open(filename, mode="rt") as fobj:
+        with gzip.open(filename, mode=READMODE) as fobj:
             yield fobj.read()
     except (OSError, IOError):
         with OPEN(filename, mode="r", encoding=encoding) as fobj:
@@ -42,7 +45,7 @@ def write_file(filepath, encoding, gzipped, data):
             data (str): The data to be written out
     """
     if gzipped:
-        with gzip.open(filepath, "wt") as fobj:
+        with gzip.open(filepath, WRITEMODE) as fobj:
             fobj.write(data)
     else:
         with OPEN(filepath, "w", encoding=encoding) as fobj:
